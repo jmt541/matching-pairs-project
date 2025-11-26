@@ -25,4 +25,14 @@ while running:
         pygame.display.flip()
 
 
-pygame.quit()        
+pygame.quit()      
+
+
+
+def generateGrid(rows, cols, startX, startY, spacing, cardWidth, cardHeight):
+        posisi = []
+
+        for i in range (rows):
+                for j in range(cols):
+                        x = startX + j * (cardWidth + spacing)
+                        y = startY + i * (cardHeight + spacing)
