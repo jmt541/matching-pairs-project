@@ -5,8 +5,8 @@ class Card:
     kartuBelakangPath = "asset/card/card-back.png"
 
     @classmethod
-    def loadAssetKartuBelakang(cls, kartuBelakangPath):
-        cls.kartuBelakang = pygame.image.load(kartuBelakangPath)
+    def loadAssetKartuBelakang(cls):
+        cls.kartuBelakang = pygame.image.load(cls.kartuBelakangPath)
 
 
     def __init__(self, kartuDepanPath, value, x, y):
@@ -23,6 +23,9 @@ class Card:
 
         else:
             screen.blit(Card.kartuBelakang, self.rect)
+
+
+
 
 
 

@@ -7,6 +7,22 @@ from card import Card
 pygame.init()
 
 
+def generateGrid(rows, cols, startX, startY, spacing, cardWidth, cardHeight):
+        posisi = []
+
+        for i in range (rows):
+                for j in range(cols):
+                        x = startX + j * (cardWidth + spacing)
+                        y = startY + i * (cardHeight + spacing)
+                        posisi.append((x,y))
+
+        return posisi
+
+
+
+
+
+
 #load asset
 background_image = pygame.image.load("asset/background.png")
 Card.loadAssetKartuBelakang()
@@ -18,7 +34,7 @@ pygame.display.set_caption("test window")
 #buat deck kartu 4x4
 values = LinkedList()
 for i in range(1, 9):
-        kartuDepanGambar = f"assets/i.png"
+        kartuDepanGambar = f"asset/card/front/{i}.png"
         values.append(i, kartuDepanGambar)
         values.append(i, kartuDepanGambar) #di append ke LL dua kali karena deck harus semua ada pair
 
@@ -40,6 +56,13 @@ posisi = generateGrid(
 )
 
 kartuFinal = []
+
+for ((value, img), (x, y)) in zip (valuePyList, posisi):
+    card = Card(kartuDepanPath = img, value = value, x = x, y = y)
+
+
+    kartuFinal.append(card)
+
 
 
 
@@ -74,17 +97,6 @@ while running:
 pygame.quit()      
 
 
-
-def generateGrid(rows, cols, startX, startY, spacing, cardWidth, cardHeight):
-        posisi = []
-
-        for i in range (rows):
-                for j in range(cols):
-                        x = startX + j * (cardWidth + spacing)
-                        y = startY + i * (cardHeight + spacing)
-                        posisi.append((x,y))
-
-        return posisi
 
 
 
