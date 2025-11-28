@@ -5,7 +5,7 @@ class Card:
     kartuBelakangPath = "asset/card/card-back.png"
 
     @classmethod
-    def load_assets(cls, kartuBelakangPath):
+    def loadAssetKartuBelakang(cls, kartuBelakangPath):
         cls.kartuBelakang = pygame.image.load(kartuBelakangPath)
 
 
