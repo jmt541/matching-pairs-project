@@ -29,7 +29,7 @@ Card.loadAssetKartuBelakang()
 
 screen = pygame.display.set_mode((1200, 700))
 pygame.display.set_caption("test window")
-
+clock = pygame.time.Clock()
 
 #buat deck kartu 4x4
 values = LinkedList()
@@ -46,29 +46,22 @@ random.shuffle(valuePyList)
 posisi = generateGrid(
 
         rows = 4, cols = 4,
-        startX = 50, startY = 50,
+        startX = 420, startY = 110,
         spacing = 10,
         cardWidth = 87, cardHeight = 132
 
-
-
-
 )
 
-kartuFinal = []
 
+
+# inisialisasi python list untuk deck yang sudah di shuffle
+kartuFinal = []
+#di sini di tambahkan ke kartuFinal nya, setiap posisi dan value sudah di masukkan ke array kartuFinal
 for ((value, img), (x, y)) in zip (valuePyList, posisi):
     card = Card(kartuDepanPath = img, value = value, x = x, y = y)
 
 
     kartuFinal.append(card)
-
-
-
-
-
-
-
 
 
 
@@ -89,8 +82,15 @@ while running:
                         running = False
 
         screen.fill((30,30,30))
-
         screen.blit(background_image, (0,0))
+
+
+        for card in kartuFinal:
+                card.draw(screen)
+
+
+
+
         pygame.display.flip()
 
 
