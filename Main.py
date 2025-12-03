@@ -63,8 +63,19 @@ def compareKartuDiStack(stackKartu):
                         card1.matched = True
                         card2.matched = True
                 else:
+                        pygame.time.delay(600) 
 
                         print ("no match!")
+                        
+                        card1.flipped = False
+
+
+                        card2.flipped = False
+                        
+
+
+ 
+
 
 
 
@@ -149,15 +160,14 @@ while running:
                 eventHandleClick(event, kartuFinal, stackKartu)
 
 
-                #lalu di compare dengan method ini
-                compareKartuDiStack(stackKartu)
 
 
 
 
 
 
-                
+
+
 
         screen.fill((30,30,30))
         screen.blit(background_image, (0,0))
@@ -167,13 +177,12 @@ while running:
                 card.draw(screen)
 
 
-        pygame.time.delay(600)
-
-
-
-
-
         pygame.display.flip()
+
+        #lalu di compare dengan method ini
+
+        compareKartuDiStack(stackKartu)
+
 
 
 pygame.quit()      
