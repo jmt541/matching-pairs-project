@@ -6,6 +6,12 @@ from card import Card
 
 
 pygame.init()
+pygame.mixer.init()
+
+# background music
+pygame.mixer.music.load("asset/music/pygame-music.mp3")
+pygame.mixer.music.set_volume(0.4)
+pygame.mixer.music.play(-1)
 
 
 def generateGrid(rows, cols, startX, startY, spacing, cardWidth, cardHeight):
