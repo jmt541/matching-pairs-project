@@ -1,6 +1,7 @@
 import pygame
 import random
 from linkedList import LinkedList
+from stack import Stack
 from card import Card
 
 
@@ -17,6 +18,65 @@ def generateGrid(rows, cols, startX, startY, spacing, cardWidth, cardHeight):
                         posisi.append((x,y))
 
         return posisi
+
+
+def pushKartuKeStack(card, stackKartu):
+        stackKartu.push(card)
+        print ("push: ", card.value)
+
+
+
+
+
+
+
+
+
+
+def eventHandleClick(event, kartuFinal, stackKartu):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                for card in kartuFinal:
+                        if card.rect.collidepoint(mouse_pos) and not card.flipped and not card.matched:
+                                 card.flipped = True
+                                 pushKartuKeStack(card, stackKartu)
+
+
+
+
+
+
+
+
+        
+
+def compareKartuDiStack(stackKartu):
+        if stackKartu.size() == 2:
+                card2 = stackKartu.pop()
+                card1 = stackKartu.pop()
+
+
+                if card1.value == card2.value:
+                        print ("match!", card1.value)
+
+                        card1.matched = True
+                        card2.matched = True
+                else:
+
+                        print ("no match!")
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -66,7 +126,8 @@ for ((value, img), (x, y)) in zip (valuePyList, posisi):
 
 
 
-
+#load stack
+stackKartu = Stack()
 
 
 
@@ -77,9 +138,26 @@ for ((value, img), (x, y)) in zip (valuePyList, posisi):
 running = True
 
 while running:
+        # membaca semua event
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                         running = False
+
+
+
+                # method eventHandleclick melihat apakah player click mouse, dan jika click mouse, kartu yang di klik di push ke stack 
+                eventHandleClick(event, kartuFinal, stackKartu)
+
+
+                #lalu di compare dengan method ini
+                compareKartuDiStack(stackKartu)
+
+
+
+
+
+
+                
 
         screen.fill((30,30,30))
         screen.blit(background_image, (0,0))
@@ -87,6 +165,10 @@ while running:
 
         for card in kartuFinal:
                 card.draw(screen)
+
+
+        pygame.time.delay(600)
+
 
 
 
