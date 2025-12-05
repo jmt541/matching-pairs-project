@@ -35,3 +35,57 @@ class LinkedList:
             temp = temp.next
 
         return arr
+    
+
+    def remove(self, value):
+        temp  = self.head
+        prev = None
+
+        while temp is not None:
+            if temp.value == value:
+                if prev is None:
+                    self.head = temp.next
+            
+
+                else:
+                    prev.next = temp.next
+
+                return
+            
+            prev = temp
+            temp = temp.next
+
+
+    def getSize(self):
+        size  = 0
+        temp  = self.head
+        while temp is not None and temp.next is not None:
+            size+=1
+            temp = temp.next
+
+        return size
+    
+
+    def getValueAtIndex(self, index):
+        temp = self.head
+        indexTemp  = 0
+        while temp is not None:
+            if index == indexTemp:
+                return temp.value
+            
+            
+            indexTemp +=1
+            temp = temp.next
+
+
+        
+
+
+
+
+
+        
+
+
+        
+

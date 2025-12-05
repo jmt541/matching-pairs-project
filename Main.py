@@ -6,7 +6,14 @@ from card import Card
 
 
 pygame.init()
+pygame.mixer.init()
 
+# background music
+pygame.mixer.music.load("asset/music/pygame-music.mp3")
+pygame.mixer.music.set_volume(0.4)
+pygame.mixer.music.play(-1)
+
+jumlahSalah = 0
 
 def generateGrid(rows, cols, startX, startY, spacing, cardWidth, cardHeight):
         posisi = []
@@ -31,8 +38,6 @@ def pushKartuKeStack(card, stackKartu):
 
 
 
-
-
 def eventHandleClick(event, kartuFinal, stackKartu):
         if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
@@ -45,13 +50,44 @@ def eventHandleClick(event, kartuFinal, stackKartu):
 
 
 
+def showHistoryNoMatch(kartuFinal, history_kartu_nomatch, screen, background):
+        for i in range(history_kartu_nomatch.getSize()):
+                value = history_kartu_nomatch.getValueAtIndex(i)
+
+
+
+ 
+
+                for card in kartuFinal:
+                        
+
+                        if card.value == value and not card.matched:
+                                card.flipped = True
+
+                                screen.blit(background, (0,0))
+
+                                for k in kartuFinal:
+                                        k.draw(screen)
+
+                                
+                                pygame.display.flip()
+                                pygame.time.delay(800)
+                                card.flipped = False
+                                break
+
+                        
+
+
+
 
 
 
 
         
 
-def compareKartuDiStack(stackKartu):
+def compareKartuDiStack(stackKartu, history_kartu_nomatch):
+        global jumlahSalah
+
         if stackKartu.size() == 2:
                 card2 = stackKartu.pop()
                 card1 = stackKartu.pop()
@@ -60,9 +96,31 @@ def compareKartuDiStack(stackKartu):
                 if card1.value == card2.value:
                         print ("match!", card1.value)
 
+                        history_kartu_nomatch.remove(card1.value)
+
                         card1.matched = True
                         card2.matched = True
+
+
+                        if (card1.value == 1):
+                                showHistoryNoMatch(kartuFinal, history_kartu_nomatch, screen, background_image)
+
+
+                
+                                
+                        
+
+
+
+                        
                 else:
+
+
+                        jumlahSalah += 1
+                      
+                        history_kartu_nomatch.append(card1.value, None)
+                        history_kartu_nomatch.append(card2.value, None)
+
                         pygame.time.delay(600) 
 
                         print ("no match!")
@@ -71,6 +129,10 @@ def compareKartuDiStack(stackKartu):
 
 
                         card2.flipped = False
+
+
+
+
                         
 
 
@@ -112,6 +174,18 @@ for i in range(1, 9):
 # di ubah ke python list untuk bisa menggunakan library random buat di shuffle
 valuePyList = values.convertList()
 random.shuffle(valuePyList)
+
+
+
+#linked list buat simpan history kartu tidak match
+history_kartu_nomatch = LinkedList()
+
+
+
+
+
+
+
 
 
 posisi = generateGrid(
@@ -181,7 +255,11 @@ while running:
 
         #lalu di compare dengan method ini
 
-        compareKartuDiStack(stackKartu)
+        compareKartuDiStack(stackKartu, history_kartu_nomatch)
+
+        if jumlahSalah == 8:
+                print("GAME OVER")
+                running = False
 
 
 
