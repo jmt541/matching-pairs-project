@@ -9,9 +9,9 @@ pygame.init()
 pygame.mixer.init()
 
 # background music
-pygame.mixer.music.load("asset/music/pygame-music.mp3")
-pygame.mixer.music.set_volume(0.4)
-pygame.mixer.music.play(-1)
+# pygame.mixer.music.load("asset/music/pygame-music.mp3")
+# pygame.mixer.music.set_volume(0.4)
+# pygame.mixer.music.play(-1)
 
 jumlahSalah = 0
 
@@ -224,9 +224,7 @@ for i in range(1, 9):
         values.append(i, kartuDepanGambar)
         values.append(i, kartuDepanGambar) #di append ke LL dua kali karena deck harus semua ada pair
 
-# di ubah ke python list untuk bisa menggunakan library random buat di shuffle
-valuePyList = values.convertList()
-random.shuffle(valuePyList)
+
 
 
 
@@ -252,14 +250,20 @@ posisi = generateGrid(
 
 
 
-# inisialisasi python list untuk deck yang sudah di shuffle
+values.shuffle()
+
+temp = values.head
 kartuFinal = []
-#di sini di tambahkan ke kartuFinal nya, setiap posisi dan value sudah di masukkan ke array kartuFinal
-for ((value, img), (x, y)) in zip (valuePyList, posisi):
-    card = Card(kartuDepanPath = img, value = value, x = x, y = y)
 
-
+for (x, y) in posisi:
+    card = Card(
+        kartuDepanPath=temp.kartuDepanPath,
+        value=temp.value,
+        x=x,
+        y=y
+    )
     kartuFinal.append(card)
+    temp = temp.next
 
 
 
