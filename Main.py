@@ -27,9 +27,32 @@ def generateGrid(rows, cols, startX, startY, spacing, cardWidth, cardHeight):
         return posisi
 
 
-def pushKartuKeStack(card, stackKartu):
-        stackKartu.push(card)
-        print ("push: ", card.value)
+# def pushKartuKeStack(card, stackKartu, push_object=True):
+ 
+#     if push_object:
+#         stackKartu.push(card)
+#         print("push object:", card.value)
+#     else:
+#         stackKartu.push(card.value)
+#         print("push value:", card.value)
+
+
+
+
+def eventHandleClickHistoryStack(event, kartuFinal, stackKartu, historyStack):
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        mouse_pos = pygame.mouse.get_pos()
+
+        for card in kartuFinal:
+            if card.rect.collidepoint(mouse_pos) and not card.flipped and not card.matched:
+                card.flipped = True
+
+                stackKartu.push(card)
+
+                historyStack.push(card.rect.topleft)
+
+                print("history push posisi->", card.rect.topleft)
+                break
 
 
 
@@ -38,72 +61,119 @@ def pushKartuKeStack(card, stackKartu):
 
 
 
-def eventHandleClick(event, kartuFinal, stackKartu):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
 
-                for card in kartuFinal:
-                        if card.rect.collidepoint(mouse_pos) and not card.flipped and not card.matched:
-                                 card.flipped = True
-                                 pushKartuKeStack(card, stackKartu)
+# def eventHandleClick(event, kartuFinal, stackKartu):
+#         if event.type == pygame.MOUSEBUTTONDOWN:
+#                 mouse_pos = pygame.mouse.get_pos()
+
+#                 for card in kartuFinal:
+#                         if card.rect.collidepoint(mouse_pos) and not card.flipped and not card.matched:
+#                                  card.flipped = True
+#                                  pushKartuKeStack(card, stackKartu)
+
+
+def showHistoryNoMatchStackHistory(kartuFinal, historyStack, screen, background):
+
+    while historyStack.size() > 0:
+        pos = historyStack.pop()
+
+    
+
+        for card in kartuFinal:
+            if card.rect.topleft == pos and not card.matched:
+                card.flipped = True
+
+                screen.blit(background, (0,0))
+                for k in kartuFinal:
+                    k.draw(screen)
+
+                pygame.display.flip()
+                pygame.time.delay(800)
+
+                card.flipped = False
+                break
 
 
 
-
-def showHistoryNoMatch(kartuFinal, history_kartu_nomatch, screen, background):
-        for i in range(history_kartu_nomatch.getSize()):
-                value = history_kartu_nomatch.getValueAtIndex(i)
+# def showHistoryNoMatch(kartuFinal, history_kartu_nomatch, screen, background):
+#         for i in range(history_kartu_nomatch.getSize()):
+#                 value = history_kartu_nomatch.getValueAtIndex(i)
 
 
 
  
 
-                for card in kartuFinal:
+#                 for card in kartuFinal:
                         
 
-                        if card.value == value and not card.matched:
-                                card.flipped = True
+#                         if card.value == value and not card.matched:
+#                                 card.flipped = True
 
-                                screen.blit(background, (0,0))
+#                                 screen.blit(background, (0,0))
 
-                                for k in kartuFinal:
-                                        k.draw(screen)
+#                                 for k in kartuFinal:
+#                                         k.draw(screen)
 
                                 
-                                pygame.display.flip()
-                                pygame.time.delay(800)
-                                card.flipped = False
-                                break
+#                                 pygame.display.flip()
+#                                 pygame.time.delay(800)
+#                                 card.flipped = False
+#                                 break
 
                         
 
 
 
 
+def compareKartuDiStack_History(stackKartu, historyStack):
+    global jumlahSalah
+
+    if stackKartu.size() == 2:
+        card2 = stackKartu.pop()
+        card1 = stackKartu.pop()
+
+        if card1.value == card2.value:
+            print("match!", card1.value)
+
+            card1.matched = True
+            card2.matched = True
+
+            if card1.value == 1:
+                showHistoryNoMatchStackHistory(kartuFinal, historyStack, screen, background_image)
+
+        else:
+            jumlahSalah += 1
+            print("no match!")
+
+            pygame.time.delay(500)
+
+            card1.flipped = False
+            card2.flipped = False
 
 
 
-        
-
-def compareKartuDiStack(stackKartu, history_kartu_nomatch):
-        global jumlahSalah
-
-        if stackKartu.size() == 2:
-                card2 = stackKartu.pop()
-                card1 = stackKartu.pop()
 
 
-                if card1.value == card2.value:
-                        print ("match!", card1.value)
 
-                        history_kartu_nomatch.remove(card1.value)
+# def compareKartuDiStack(stackKartu, history_kartu_nomatch):
+#         global jumlahSalah
 
-                        card1.matched = True
-                        card2.matched = True
+#         if stackKartu.size() == 2:
+#                 card2 = stackKartu.pop()
+#                 card1 = stackKartu.pop()
 
 
-                        if (card1.value == 1):
-                                showHistoryNoMatch(kartuFinal, history_kartu_nomatch, screen, background_image)
+#                 if card1.value == card2.value:
+#                         print ("match!", card1.value)
+
+#                         history_kartu_nomatch.remove(card1.value)
+
+#                         card1.matched = True
+#                         card2.matched = True
+
+
+#                         if (card1.value == 1):
+#                                 showHistoryNoMatch(kartuFinal, history_kartu_nomatch, screen, background_image)
 
 
                 
@@ -113,44 +183,27 @@ def compareKartuDiStack(stackKartu, history_kartu_nomatch):
 
 
                         
-                else:
+#                 else:
 
 
-                        jumlahSalah += 1
+#                         jumlahSalah += 1
                       
-                        history_kartu_nomatch.append(card1.value, None)
-                        history_kartu_nomatch.append(card2.value, None)
+#                         history_kartu_nomatch.append(card1.value, None)
+#                         history_kartu_nomatch.append(card2.value, None)
 
-                        pygame.time.delay(600) 
+#                         pygame.time.delay(600) 
 
-                        print ("no match!")
+#                         print ("no match!")
                         
-                        card1.flipped = False
+#                         card1.flipped = False
 
 
-                        card2.flipped = False
+#                         card2.flipped = False
 
 
 
 
                         
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -178,7 +231,7 @@ random.shuffle(valuePyList)
 
 
 #linked list buat simpan history kartu tidak match
-history_kartu_nomatch = LinkedList()
+#history_kartu_nomatch = LinkedList()
 
 
 
@@ -215,6 +268,10 @@ for ((value, img), (x, y)) in zip (valuePyList, posisi):
 stackKartu = Stack()
 
 
+#stack untuk history
+historyStack = Stack()
+
+
 
 
 
@@ -231,7 +288,11 @@ while running:
 
 
                 # method eventHandleclick melihat apakah player click mouse, dan jika click mouse, kartu yang di klik di push ke stack 
-                eventHandleClick(event, kartuFinal, stackKartu)
+                #eventHandleClick(event, kartuFinal, stackKartu)
+
+
+                #method eventHandleClick stack history
+                eventHandleClickHistoryStack(event, kartuFinal, stackKartu, historyStack)
 
 
 
@@ -255,10 +316,10 @@ while running:
 
         #lalu di compare dengan method ini
 
-        compareKartuDiStack(stackKartu, history_kartu_nomatch)
+        #compareKartuDiStack(stackKartu, history_kartu_nomatch)
+        compareKartuDiStack_History(stackKartu, historyStack)
 
-        if jumlahSalah == 8:
-                print("GAME OVER")
+        if jumlahSalah == 100:
                 running = False
 
 
